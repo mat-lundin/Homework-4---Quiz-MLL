@@ -4,21 +4,36 @@ var questions = [
         question: 'What is the best holiday?',
         choices: ['Christmas','Independence Day','Halloween'],
         answer: 'Halloween'
+    },
+    {
+        question: 'What is the best cereal?',
+        choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
+        answer: 'Reeses Peanut Butter Puffs'
     }
 ];
 
 var startBtn = document.getElementById('start');
+console.log(startBtn)
 
 //create element for the timer
 var secondsLeft = 120;
 
 // WHEN I click the start button - eventlistener
-startBtn.addEventListener(function (event){
-
+startBtn.addEventListener('click',function (event){
+    console.log('button clicked')
+    showQuestions();
 
 });
 
 
+//put question on page - call this in a for each
+function showQuestions(){
+    questions.forEach(
+        console.log(questions[0]['question'])
+    );
+};
+
+//timer
 function setTime() {
     // Sets interval in variable
     var timerInterval = setInterval(function() {
