@@ -21,16 +21,21 @@ var secondsLeft = 120;
 // WHEN I click the start button - eventlistener
 startBtn.addEventListener('click',function (event){
     console.log('button clicked')
-    showQuestions();
+    showQuestion();
 
 });
 
 
 //put question on page - call this in a for each
-function showQuestions(){
-    questions.forEach(
-        console.log(questions[0]['question'])
-    );
+function showQuestion(){
+    var boxEl = document.createElement('div');
+    var qEl = document.createElement('span');
+    //for each on the choices?
+    var cEl
+
+    var cVal = questions[0].choices
+    qEl.textContent = questions[0].question
+    qEl.className = 'question'
 };
 
 //timer
