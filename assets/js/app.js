@@ -157,6 +157,7 @@ function setTime() {
 // THEN time is subtracted from the clock - new timer taking current value and starting a few seconds below that?
 // WHEN all questions are answered or the timer reaches 0 - condition of timer loop plus another function that evaluates all answers given? 
 // THEN the game is over - hide the question boxes and display the start button and score
+//clear and hide timer, add initials prompt, save to local storage
 function endGame(){
     console.log('end game');
 };
