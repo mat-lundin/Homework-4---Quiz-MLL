@@ -23,7 +23,7 @@ var questionCount = 0;
 var score = 0;
 
 //create element for the timer
-var secondsLeft = 10;
+var secondsLeft = 60;
 
 // WHEN I click the start button - eventlistener
 startBtn.addEventListener('click',function (event){
@@ -31,59 +31,83 @@ startBtn.addEventListener('click',function (event){
     showQuestion();
     hideStart();
     setTime();
+    showScore();
 
 });
 
+//show score
+function showScore(){
+    var scoreEl = document.createElement('div');
+    scoreEl.className = 'score';
+    scoreEl.textContent = 'Your score: '+score;
+    bodyEl.append(scoreEl);
+}
 
 //put question on page - call this in a for each
 function showQuestion(){
     var boxEl = document.createElement('div');
     var qEl = document.createElement('span');
-    boxEl.className = 'box';
+    boxEl.id = 'box'+questionCount;
+    boxEl.className = 'boxes'
     
     //for each on the choices?
 
     var cVal = questions[questionCount].choices;
     qEl.textContent = questions[questionCount].question;
     qEl.className = 'question';
-    // var choicesEl = document.createElement('ul')
-    // choicesEl.className = 'choices'
+
     boxEl.append(qEl);
+
     // boxEl.append(choicesEl);
     bodyEl.append(boxEl);
     for (var i=0;i<cVal.length; i++){
         var item = document.createElement('button');
         item.className = 'choice';
         item.textContent = cVal[i];
+        item.setAttribute('data-choice',cVal[i])
         boxEl.append(item);
     };
     //click the div and call a handle function
     console.log(boxEl);
-    boxEl.addEventListener('click', handleChoiceClick);
+    var boxId = '#box' + questionCount.toString();
+    var currentBox = document.getElementById('box'+questionCount);
+    console.log('boxId = ' + boxId);
+    console.log(typeof boxId);
+    currentBox.addEventListener('click', handleChoiceClick);
+};
+
+
+//handle choice click
+function handleChoiceClick (event) {
+    // console.log('this get attribute in handle = '+this.getAttribute('data-choice'));
+    if (event.target.matches('.choice')){
+        console.log('target get attribute in handle = ' +event.target.getAttribute('data-choice'));
+        answerEval(event.target);
+        questionCount ++;
+        showQuestion();
+    }
+    console.log('this is '+this);
+};
+
+//evaluate answer
+function answerEval(target) {
+    console.log('target = '+ target)
+    console.log('target value in answerEval = '+target.value)
+    console.log(questions[questionCount].answer)
+    if (target.getAttribute('data-choice') === questions[questionCount].answer) {
+        target.style.backgroundColor = 'green';
+        score = score + 10;
+    } else {
+        target.style.backgroundColor = 'red'
+        secondsLeft = secondsLeft - 10;
+    };
 };
 
 //hide start button
 function hideStart() {
     startBtn.style.display = 'none';
-}
+};
 
-//handle choice click
-function handleChoiceClick (event) {
-    if (event.target.matches('.choice')){
-        answerEval(event.target)
-    }
-    console.log(this);
-}
-
-//evaluate answer
-function answerEval(target) {
-    if (target.value === questions[questionCount].answer) {
-        target.style('backgroundColor', 'green');
-        score = score + 10
-    } else {
-        target.style('backgroundColor', 'red');
-    }
-}
 
 //timer
 timeEl = document.createElement('div');
