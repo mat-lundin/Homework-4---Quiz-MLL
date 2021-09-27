@@ -9,6 +9,21 @@ var questions = [
         question: 'What is the best cereal?',
         choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
         answer: 'Reeses Peanut Butter Puffs'
+    },
+    {
+        question: 'What is one plus one?',
+        choices: ['Three', 'Two', 'One Hundred Fifty Eight'],
+        answer: 'Two'
+    },
+    {
+        question: 'What is the best cereal?',
+        choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
+        answer: 'Reeses Peanut Butter Puffs'
+    },
+    {
+        question: 'What is the best cereal?',
+        choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
+        answer: 'Reeses Peanut Butter Puffs'
     }
 ];
 
