@@ -53,7 +53,7 @@ startBtn.addEventListener('click',function (event){
 //show score
 function showScore(){
     var scoreEl = document.createElement('div');
-    scoreEl.className = 'score';
+    scoreEl.id = 'score';
     scoreEl.textContent = 'Your score: '+score;
     bodyEl.append(scoreEl);
 }
@@ -112,6 +112,7 @@ function answerEval(target) {
     if (target.getAttribute('data-choice') === questions[questionCount].answer) {
         target.style.backgroundColor = 'green';
         score = score + 10;
+        document.getElementById('score').textContent = 'Your score: '+score;
     } else {
         target.style.backgroundColor = 'red'
         secondsLeft = secondsLeft - 10;
