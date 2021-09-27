@@ -60,6 +60,7 @@ function showScore(){
 
 //put question on page - call this in a for each
 function showQuestion(){
+    if (questionCount < questions.length){
     var boxEl = document.createElement('div');
     var qEl = document.createElement('span');
     boxEl.id = 'box'+questionCount;
@@ -89,7 +90,9 @@ function showQuestion(){
     console.log('boxId = ' + boxId);
     console.log(typeof boxId);
     currentBox.addEventListener('click', handleChoiceClick);
-};
+} else{
+    endGame();
+}};
 
 
 //handle choice click
@@ -155,7 +158,7 @@ function setTime() {
 // WHEN all questions are answered or the timer reaches 0 - condition of timer loop plus another function that evaluates all answers given? 
 // THEN the game is over - hide the question boxes and display the start button and score
 function endGame(){
-
+    console.log('end game');
 };
 // WHEN the game is over
 // THEN I can save my initials and my score - form field to enter initials, save both as separate strings in local storage
