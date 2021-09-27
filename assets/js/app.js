@@ -20,6 +20,8 @@ console.log(startBtn)
 
 var questionCount = 0;
 
+var score = 0;
+
 //create element for the timer
 var secondsLeft = 10;
 
@@ -44,20 +46,20 @@ function showQuestion(){
     var cVal = questions[questionCount].choices;
     qEl.textContent = questions[questionCount].question;
     qEl.className = 'question';
-    var choicesEl = document.createElement('ul')
-    choicesEl.className = 'choices'
+    // var choicesEl = document.createElement('ul')
+    // choicesEl.className = 'choices'
     boxEl.append(qEl);
-    boxEl.append(choicesEl);
+    // boxEl.append(choicesEl);
     bodyEl.append(boxEl);
     for (var i=0;i<cVal.length; i++){
         var item = document.createElement('button');
         item.className = 'choice';
         item.textContent = cVal[i];
-        choicesEl.append(item);
+        boxEl.append(item);
     };
     //click the div and call a handle function
     console.log(boxEl);
-    boxEl.addEventListener('click', '.choice', handleChoiceClick);
+    boxEl.addEventListener('click', handleChoiceClick);
 };
 
 //hide start button
@@ -67,10 +69,21 @@ function hideStart() {
 
 //handle choice click
 function handleChoiceClick (event) {
+    if (event.target.matches('.choice')){
+        answerEval(event.target)
+    }
     console.log(this);
 }
 
-
+//evaluate answer
+function answerEval(target) {
+    if (target.value === questions[questionCount].answer) {
+        target.style('backgroundColor', 'green');
+        score = score + 10
+    } else {
+        target.style('backgroundColor', 'red');
+    }
+}
 
 //timer
 timeEl = document.createElement('div');
