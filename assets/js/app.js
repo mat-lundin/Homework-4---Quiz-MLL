@@ -90,9 +90,11 @@ function showQuestion(){
     console.log('boxId = ' + boxId);
     console.log(typeof boxId);
     currentBox.addEventListener('click', handleChoiceClick);
-} else{
-    endGame();
-}};
+    
+    } else{
+        endGame();
+    }
+};
 
 
 //handle choice click
@@ -105,6 +107,7 @@ function handleChoiceClick (event) {
         showQuestion();
     }
     console.log('this is '+this);
+    // document.getElementById('box'+questionCount.toString()).removeEventListener('click', handleChoiceClick);
 };
 
 //evaluate answer
@@ -120,6 +123,7 @@ function answerEval(target) {
         target.style.backgroundColor = 'red'
         secondsLeft = secondsLeft - 10;
     };
+    // target.removeEventListener('click', handleChoiceClick);
 };
 
 //hide start button
