@@ -12,16 +12,23 @@ var questions = [
     }
 ];
 
+
+var bodyEl = document.getElementsByTagName('body')[0];
+console.log('bodyEl = ' + bodyEl)
 var startBtn = document.getElementById('start');
 console.log(startBtn)
 
+var questionCount = 0;
+
 //create element for the timer
-var secondsLeft = 120;
+var secondsLeft = 10;
 
 // WHEN I click the start button - eventlistener
 startBtn.addEventListener('click',function (event){
     console.log('button clicked')
     showQuestion();
+    hideStart();
+    setTime();
 
 });
 
@@ -30,23 +37,55 @@ startBtn.addEventListener('click',function (event){
 function showQuestion(){
     var boxEl = document.createElement('div');
     var qEl = document.createElement('span');
+    boxEl.className = 'box';
+    
     //for each on the choices?
-    var cEl
 
-    var cVal = questions[0].choices
-    qEl.textContent = questions[0].question
-    qEl.className = 'question'
+    var cVal = questions[questionCount].choices;
+    qEl.textContent = questions[questionCount].question;
+    qEl.className = 'question';
+    var choicesEl = document.createElement('ul')
+    choicesEl.className = 'choices'
+    boxEl.append(qEl);
+    boxEl.append(choicesEl);
+    bodyEl.append(boxEl);
+    for (var i=0;i<cVal.length; i++){
+        var item = document.createElement('button');
+        item.className = 'choice';
+        item.textContent = cVal[i];
+        choicesEl.append(item);
+    };
+    //click the div and call a handle function
+    console.log(boxEl);
+    boxEl.addEventListener('click', '.choice', handleChoiceClick);
 };
 
+//hide start button
+function hideStart() {
+    startBtn.style.display = 'none';
+}
+
+//handle choice click
+function handleChoiceClick (event) {
+    console.log(this);
+}
+
+
+
 //timer
+timeEl = document.createElement('div');
+timeEl.className = 'timer';
+bodyEl.append(timeEl);
+
 function setTime() {
     // Sets interval in variable
     var timerInterval = setInterval(function() {
-      secondsLeft--;
-      timeEl.textContent = secondsLeft + " seconds left till colorsplosion.";
-  
-      if(secondsLeft === 0) {
+        secondsLeft--; 
+        timeEl.textContent = secondsLeft + " seconds left.";
+      
+      if(secondsLeft <= 0) {
         // Stops execution of action at set interval
+        startBtn.style.display = 'block';
         clearInterval(timerInterval);
         // Calls function to end the game
         endGame();
