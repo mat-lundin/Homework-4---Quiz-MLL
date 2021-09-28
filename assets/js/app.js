@@ -16,14 +16,14 @@ var questions = [
         answer: 'Two'
     },
     {
-        question: 'What is the best cereal?',
-        choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
-        answer: 'Reeses Peanut Butter Puffs'
+        question: 'What is the highest number?',
+        choices: ['Eighteen', 'Sixteen', 'Twenty-four'],
+        answer: 'Twenty-four'
     },
     {
-        question: 'What is the best cereal?',
-        choices: ['Cheerios', 'Honey Nut Cheerios', 'Reeses Peanut Butter Puffs'],
-        answer: 'Reeses Peanut Butter Puffs'
+        question: 'Who played Detective Murtaugh in Lethal Weapon?',
+        choices: ['Danny Glover', 'Mel Gibson', 'Joe Pesci'],
+        answer: 'Danny Glover'
     }
 ];
 
@@ -37,7 +37,7 @@ var questionCount = 0;
 
 var score = 0;
 
-//create element for the timer
+//create variable for the timer
 var secondsLeft = 60;
 
 // WHEN I click the start button - eventlistener
@@ -47,6 +47,7 @@ startBtn.addEventListener('click',function (event){
     hideStart();
     setTime();
     showScore();
+    hideScorebtn();
 
 });
 
@@ -117,6 +118,8 @@ function showQuestion(){
     
     } else{
         endGame();
+        secondsLeft = 0;
+        timeEl.textContent = '';
     }
 };
 
@@ -166,6 +169,10 @@ function hideStart() {
     startBtn.style.display = 'none';
 };
 
+//hide scorecard button
+function hideScorebtn() {
+    showScoreEl.style.display = 'none';
+};
 
 //timer
 timeEl = document.createElement('div');
@@ -176,15 +183,22 @@ function setTime() {
     // Sets interval in variable
     var timerInterval = setInterval(function() {
         secondsLeft--; 
-        timeEl.textContent = secondsLeft + " seconds left.";
+        // timeEl.textContent = secondsLeft + " seconds left.";
       
-      if(secondsLeft <= 0) {
+      if(secondsLeft <= 0 && !document.getElementById('initial')) {
         // Stops execution of action at set interval
         disableButtons
-        startBtn.style.display = 'block';
+        // startBtn.style.display = 'block';
         clearInterval(timerInterval);
         // Calls function to end the game
         endGame();
+      } else if (secondsLeft <= 0){
+        disableButtons
+        clearInterval(timerInterval);
+        // secondsLeft--; 
+        timeEl.textContent = secondsLeft + " seconds left.";
+      } else {
+        timeEl.textContent = secondsLeft + " seconds left.";
       }
   
     }, 1000);
@@ -200,6 +214,7 @@ function setTime() {
 //clear and hide timer, add initials prompt, save to local storage
 function endGame(){
     console.log('end game');
+    // hideStart();
     enterInitials();
     //create reset button
     var resetEl = document.createElement('button');
@@ -243,7 +258,7 @@ var storage = JSON.parse(localStorage.getItem('scorecard'))||[];
 //save to Local Storage
 function saveStuff(event){
     event.preventDefault();
-    var initials = document.getElementById('initial').value.toUpperCase;
+    var initials = document.getElementById('initial').value.toUpperCase();
     var scoreObj = {
         inits: initials,
         curScore: score

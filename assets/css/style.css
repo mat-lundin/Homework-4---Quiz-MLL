@@ -41,14 +41,16 @@
 }
 
 .form {
-    border-style: solid;
     text-align: center;
     font-size: 30px;
+    margin: 50px;
+    width:fit-content;
 }
 
 #reset-btn {
-    text-align: center;
+    justify-self: center;
     font-size: 30px;
+    border-radius: 10px;
 }
 
 #scorecard {
@@ -65,4 +67,8 @@
 li {
     padding: 2px;
     border-style: solid;
+}
+
+.save {
+    border-radius: 10px;
 }
