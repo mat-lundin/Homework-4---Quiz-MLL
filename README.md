@@ -22,3 +22,6 @@ The game ends when all questions are answered or the time runs out. When the gam
 
 If the player wishes to play again, there appears a RESET button which will bring the player back to the original screen. They will be able to see their score appended to the list of scores if they click on Show Scorecard.
 
+The quiz can be accessed online [here.](https://mat-lundin.github.io/Homework-4---Quiz-MLL/)
+
+![quiz screenshot](./assets/images/quizScreenshot.png)
