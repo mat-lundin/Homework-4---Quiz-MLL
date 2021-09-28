@@ -29,9 +29,9 @@ var questions = [
 
 
 var bodyEl = document.getElementsByTagName('body')[0];
-console.log('bodyEl = ' + bodyEl)
+console.log('bodyEl = ' + bodyEl);
 var startBtn = document.getElementById('start');
-console.log(startBtn)
+console.log(startBtn);
 
 var questionCount = 0;
 
@@ -42,13 +42,37 @@ var secondsLeft = 60;
 
 // WHEN I click the start button - eventlistener
 startBtn.addEventListener('click',function (event){
-    console.log('button clicked')
+    console.log('button clicked');
     showQuestion();
     hideStart();
     setTime();
     showScore();
 
 });
+
+//show saved scorecard when the show scorecard button is clicked
+var showScoreEl = document.getElementById('showScores')
+showScoreEl.addEventListener('click',showScoreCard)
+
+//show scorecard
+function showScoreCard(){
+    if (!document.getElementById('scorecard')){
+    var scoreCardEl = document.createElement('div');
+    scoreCardEl.setAttribute('id','scorecard');
+    scoreCardEl.textContent = 'Saved Scores'
+    var scoreListEl = document.createElement('ul');
+
+    storage.forEach(function(item,index){
+        var savedScoreEl = document.createElement('li')
+        savedScoreEl.textContent = item.inits + ' - ' + item.curScore;
+        // console.log('storage = ' + storage)
+        // console.log('storage[i] = ' + storage[index])
+        // console.log('item.inits = ' + item.inits)
+        scoreListEl.append(savedScoreEl)
+    })
+    scoreCardEl.append(scoreListEl);
+    bodyEl.append(scoreCardEl);
+}};
 
 //show score
 function showScore(){
@@ -64,7 +88,7 @@ function showQuestion(){
     var boxEl = document.createElement('div');
     var qEl = document.createElement('span');
     boxEl.id = 'box'+questionCount;
-    boxEl.className = 'boxes'
+    boxEl.className = 'boxes';
     
     //for each on the choices?
 
@@ -80,7 +104,7 @@ function showQuestion(){
         var item = document.createElement('button');
         item.className = 'choice';
         item.textContent = cVal[i];
-        item.setAttribute('data-choice',cVal[i])
+        item.setAttribute('data-choice',cVal[i]);
         boxEl.append(item);
     };
     //click the div and call a handle function
@@ -103,8 +127,10 @@ function handleChoiceClick (event) {
     if (event.target.matches('.choice')){
         console.log('target get attribute in handle = ' +event.target.getAttribute('data-choice'));
         answerEval(event.target);
-        questionCount ++;
-        showQuestion();
+        if(secondsLeft>0){
+            questionCount ++;
+            showQuestion();
+        }
     }
     console.log('this is '+this);
     // document.getElementById('box'+questionCount.toString()).removeEventListener('click', handleChoiceClick);
@@ -112,19 +138,28 @@ function handleChoiceClick (event) {
 
 //evaluate answer
 function answerEval(target) {
-    console.log('target = '+ target)
-    console.log('target value in answerEval = '+target.value)
-    console.log(questions[questionCount].answer)
+    console.log('target = '+ target);
+    console.log('target value in answerEval = '+target.value);
+    console.log(questions[questionCount].answer);
     if (target.getAttribute('data-choice') === questions[questionCount].answer) {
         target.style.backgroundColor = 'green';
         score = score + 10;
         document.getElementById('score').textContent = 'Your score: '+score;
     } else {
-        target.style.backgroundColor = 'red'
+        target.style.backgroundColor = 'red';
         secondsLeft = secondsLeft - 10;
     };
+    disableButtons();
     // target.removeEventListener('click', handleChoiceClick);
 };
+
+//disable choice buttons
+function disableButtons() {
+    var buttons = document.querySelectorAll('.choice');
+    buttons.forEach(function(button,i){
+        console.log(button,i);
+        button.disabled = true;
+    })};
 
 //hide start button
 function hideStart() {
@@ -145,6 +180,7 @@ function setTime() {
       
       if(secondsLeft <= 0) {
         // Stops execution of action at set interval
+        disableButtons
         startBtn.style.display = 'block';
         clearInterval(timerInterval);
         // Calls function to end the game
@@ -164,6 +200,59 @@ function setTime() {
 //clear and hide timer, add initials prompt, save to local storage
 function endGame(){
     console.log('end game');
+    enterInitials();
+    //create reset button
+    var resetEl = document.createElement('button');
+    resetEl.setAttribute('type','submit');
+    resetEl.setAttribute('id','reset-btn')
+    resetEl.textContent = 'RESET';
+    bodyEl.append(resetEl);
+    resetEl.addEventListener('click',function(){
+        location.reload();
+    });
+
 };
 // WHEN the game is over
 // THEN I can save my initials and my score - form field to enter initials, save both as separate strings in local storage
+function enterInitials(){
+    var formEl = document.createElement('form');
+    formEl.setAttribute('class','form');
+    var labelEl = document.createElement('label');
+    labelEl.setAttribute('for', 'initial');
+    labelEl.textContent = 'Initials';
+    var initialEl = document.createElement('input');
+    initialEl.setAttribute('id','initial');
+    initialEl.setAttribute('type','text')
+    var saveEl = document.createElement('button');
+    saveEl.setAttribute('type','submit');
+    saveEl.textContent = 'Save Score and Initials';
+    saveEl.setAttribute('id','save');
+
+    bodyEl.append(formEl);
+    formEl.append(labelEl);
+    formEl.append(initialEl);
+    formEl.append(saveEl);
+
+    formEl.addEventListener('submit', saveStuff)
+};
+
+//array for initial/score objects
+var storage = JSON.parse(localStorage.getItem('scorecard'))||[];
+
+
+//save to Local Storage
+function saveStuff(event){
+    event.preventDefault();
+    var initials = document.getElementById('initial').value.toUpperCase;
+    var scoreObj = {
+        inits: initials,
+        curScore: score
+    };
+    storage.push(scoreObj);
+    // console.log(initials);
+
+    localStorage.setItem('scorecard',JSON.stringify(storage));
+    document.getElementById('save').textContent = 'Saved!';
+
+
+};
